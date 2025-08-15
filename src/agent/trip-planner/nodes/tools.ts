@@ -1,10 +1,11 @@
 import { TripPlannerState, TripPlannerUpdate } from "../types";
-import { ChatOpenAI } from "@langchain/openai";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { typedUi } from "@langchain/langgraph-sdk/react-ui/server";
 import type ComponentMap from "../../../agent-uis/index";
 import { z } from "zod";
 import { LangGraphRunnableConfig } from "@langchain/langgraph";
 import { getAccommodationsListProps } from "../utils/get-accommodations";
+import { v4 as uuidv4 } from "uuid";
 import { findToolCall } from "../../find-tool-call";
 
 const listAccommodationsSchema = z
@@ -37,9 +38,10 @@ export async function callTools(
 
   const ui = typedUi<typeof ComponentMap>(config);
 
-  const llm = new ChatOpenAI({ model: "gpt-4o", temperature: 0 }).bindTools(
-    ACCOMMODATIONS_TOOLS,
-  );
+  const llm = new ChatGoogleGenerativeAI({
+    model: "gemini-2.5-flash",
+    temperature: 0,
+  }).bindTools(ACCOMMODATIONS_TOOLS);
 
   const response = await llm.invoke([
     {
@@ -51,11 +53,20 @@ export async function callTools(
   ]);
 
   const listAccommodationsToolCall = response.tool_calls?.find(
-    findToolCall("list-accommodations")<typeof listAccommodationsSchema>,
+    findToolCall("list-accommodations"),
   );
+
+  if (listAccommodationsToolCall) {
+    listAccommodationsToolCall.id = `${uuidv4()}`;
+  }
+
   const listRestaurantsToolCall = response.tool_calls?.find(
-    findToolCall("list-restaurants")<typeof listRestaurantsSchema>,
+    findToolCall("list-restaurants"),
   );
+
+  if (listRestaurantsToolCall) {
+    listRestaurantsToolCall.id = `${uuidv4()}`;
+  }
 
   if (!listAccommodationsToolCall && !listRestaurantsToolCall) {
     throw new Error("No tool calls found");
@@ -78,9 +89,12 @@ export async function callTools(
     ui.push(
       {
         name: "restaurants-list",
-        props: { tripDetails: state.tripDetails },
+        props: {
+          tripDetails: state.tripDetails,
+          toolCallId: listRestaurantsToolCall.id ?? "",
+        },
       },
-      { message: response },
+      { message: response, merge: true },
     );
   }
 

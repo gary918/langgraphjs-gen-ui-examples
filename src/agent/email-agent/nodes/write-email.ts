@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { EmailAgentState, EmailAgentUpdate } from "../types";
-import { ChatOpenAI } from "@langchain/openai";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { formatMessages } from "@/agent/utils/format-messages";
 
 const SEND_EMAIL_PROMPT = `You're an AI email assistant, tasked with writing an email for the user.
@@ -25,8 +25,8 @@ const sendEmailSchema = z.object({
 export async function writeEmail(
   state: EmailAgentState,
 ): Promise<EmailAgentUpdate> {
-  const model = new ChatOpenAI({
-    model: "gpt-4o",
+  const model = new ChatGoogleGenerativeAI({
+    model: "gemini-2.5-flash",
     temperature: 0,
   }).bindTools([
     {

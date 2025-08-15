@@ -1,4 +1,4 @@
-import { ChatAnthropic } from "@langchain/anthropic";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { Annotation, END, START, StateGraph } from "@langchain/langgraph";
 import { GenerativeUIAnnotation } from "../types";
 import { z } from "zod";
@@ -30,8 +30,8 @@ const workflow = new StateGraph(PizzaOrdererAnnotation)
           ),
       })
       .describe("The schema for finding a pizza shop for the user");
-    const model = new ChatAnthropic({
-      model: "claude-3-5-sonnet-latest",
+    const model = new ChatGoogleGenerativeAI({
+      model: "gemini-2.5-flash",
       temperature: 0,
     }).withStructuredOutput(findShopSchema, {
       name: "find_pizza_shop",
@@ -76,8 +76,8 @@ const workflow = new StateGraph(PizzaOrdererAnnotation)
         order: z.string().describe("The full pizza order for the user"),
       })
       .describe("The schema for ordering a pizza for the user");
-    const model = new ChatAnthropic({
-      model: "claude-3-5-sonnet-latest",
+    const model = new ChatGoogleGenerativeAI({
+      model: "gemini-2.5-flash",
       temperature: 0,
     }).withStructuredOutput(placeOrderSchema, {
       name: "place_pizza_order",

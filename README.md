@@ -1,3 +1,9 @@
+# Quick Start
+* ```export GOOGLE_CLOUD_PROJECT=firstproject-463308```
+* ```gcloud auth application-default login```
+* ```pnpm agent```
+* ```pnpm dev```
+
 # LangGraph Generative UI Examples
 
 This repository contains a series of agents intended to be used with the [Agent Chat UI](https://agentchat.vercel.app) ([repo](https://github.com/langchain-ai/agent-chat-ui)).

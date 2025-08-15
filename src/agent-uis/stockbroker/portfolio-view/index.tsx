@@ -1,5 +1,5 @@
 import "./index.css";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 export default function PortfolioView() {
   // Placeholder portfolio data - ideally would come from props
@@ -14,65 +14,65 @@ export default function PortfolioView() {
     },
     holdings: [
       {
-        symbol: "AAPL",
-        name: "Apple Inc.",
-        shares: 45,
-        price: 187.32,
-        value: 8429.4,
-        change: 1.2,
-        allocation: 5.8,
-        avgCost: 162.5,
+        "symbol": "AAPL",
+        "name": "Apple Inc.",
+        "shares": 45,
+        "price": 232.83,
+        "value": 10477.35,
+        "change": -0.55,
+        "allocation": 5.8,
+        "avgCost": 162.5
       },
       {
-        symbol: "MSFT",
-        name: "Microsoft Corporation",
-        shares: 30,
-        price: 403.78,
-        value: 12113.4,
-        change: 0.5,
-        allocation: 8.4,
-        avgCost: 340.25,
+        "symbol": "MSFT",
+        "name": "Microsoft Corporation",
+        "shares": 30,
+        "price": 522.48,
+        "value": 15674.40,
+        "change": 1.90,
+        "allocation": 8.4,
+        "avgCost": 340.25
       },
       {
-        symbol: "AMZN",
-        name: "Amazon.com Inc.",
-        shares: 25,
-        price: 178.75,
-        value: 4468.75,
-        change: -0.8,
-        allocation: 3.1,
-        avgCost: 145.3,
+        "symbol": "AMZN",
+        "name": "Amazon.com Inc.",
+        "shares": 25,
+        "price": 230.98,
+        "value": 5774.50,
+        "change": 6.44,
+        "allocation": 3.1,
+        "avgCost": 145.3
       },
       {
-        symbol: "GOOGL",
-        name: "Alphabet Inc.",
-        shares: 20,
-        price: 164.85,
-        value: 3297.0,
-        change: 2.1,
-        allocation: 2.3,
-        avgCost: 125.75,
+        "symbol": "GOOGL",
+        "name": "Alphabet Inc.",
+        "shares": 50,
+        "price": 202.94,
+        "value": 10147.00,
+        "change": 0.98,
+        "allocation": 2.3,
+        "avgCost": 125.75
       },
       {
-        symbol: "NVDA",
-        name: "NVIDIA Corporation",
-        shares: 35,
-        price: 875.28,
-        value: 30634.8,
-        change: 3.4,
-        allocation: 21.3,
-        avgCost: 520.4,
+        "symbol": "NVDA",
+        "name": "NVIDIA Corporation",
+        "shares": 35,
+        "price": 182.02,
+        "value": 6370.70,
+        "change": 0.48,
+        "allocation": 21.3,
+        "avgCost": 520.4
       },
       {
-        symbol: "TSLA",
-        name: "Tesla, Inc.",
-        shares: 40,
-        price: 175.9,
-        value: 7036.0,
-        change: -1.2,
-        allocation: 4.9,
-        avgCost: 190.75,
-      },
+        "symbol": "TSLA",
+        "name": "Tesla, Inc.",
+        "shares": 40,
+        "price": 335.58,
+        "value": 13423.20,
+        "change": -3.65,
+        "allocation": 4.9,
+        "avgCost": 190.75
+      }
     ],
   });
 
@@ -83,7 +83,7 @@ export default function PortfolioView() {
     key: string;
     direction: "asc" | "desc";
   }>({
-    key: "allocation",
+    key: "shares",
     direction: "desc",
   });
   const [selectedHolding, setSelectedHolding] = useState<string | null>(null);
@@ -122,29 +122,33 @@ export default function PortfolioView() {
   };
 
   // Faux chart data for selected holding
-  const generateChartData = (symbol: string) => {
-    const data = [];
-    const basePrice =
-      portfolio.holdings.find((h) => h.symbol === symbol)?.price || 100;
+  const generateChartData = useCallback(
+    (symbol: string) => {
+      const data = [];
+      let price =
+        portfolio.holdings.find((h) => h.symbol === symbol)?.price || 100;
 
-    for (let i = 0; i < 30; i++) {
-      const date = new Date();
-      date.setDate(date.getDate() - 30 + i);
+      for (let i = 0; i < 30; i++) {
+        const date = new Date();
+        date.setDate(date.getDate() - 30 + i);
 
-      const randomFactor = (Math.sin(i / 5) + Math.random() - 0.5) * 0.05;
-      const price = basePrice * (1 + randomFactor * (i / 3));
+        // Simulate a random walk for the price
+        const randomFactor = (Math.random() - 0.48) * 0.1; // Skew slightly positive
+        price *= 1 + randomFactor;
 
-      data.push({
-        date: date.toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-        }),
-        price: parseFloat(price.toFixed(2)),
-      });
-    }
+        data.push({
+          date: date.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+          }),
+          price: parseFloat(price.toFixed(2)),
+        });
+      }
 
-    return data;
-  };
+      return data;
+    },
+    [portfolio.holdings],
+  );
 
   // Calculate total value and percent change for display
   const totalChange = portfolio.holdings.reduce(
@@ -157,7 +161,12 @@ export default function PortfolioView() {
   const selectedStock = selectedHolding
     ? portfolio.holdings.find((h) => h.symbol === selectedHolding)
     : null;
-  const chartData = selectedHolding ? generateChartData(selectedHolding) : [];
+  const chartData = useMemo(() => {
+    if (!selectedHolding) {
+      return [];
+    }
+    return generateChartData(selectedHolding);
+  }, [selectedHolding, generateChartData]);
 
   return (
     <div className="w-full max-w-3xl bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
@@ -550,33 +559,39 @@ export default function PortfolioView() {
             <div className="border-t border-gray-200 p-4">
               <div className="h-40 bg-white">
                 <div className="flex items-end h-full space-x-1">
-                  {chartData.map((point, index) => {
+                  {(() => {
                     const maxPrice = Math.max(...chartData.map((d) => d.price));
                     const minPrice = Math.min(...chartData.map((d) => d.price));
                     const range = maxPrice - minPrice;
-                    const heightPercent =
-                      range === 0
-                        ? 50
-                        : ((point.price - minPrice) / range) * 80 + 10;
+                    return chartData.map((point, index) => {
+                      const heightPercent =
+                        range === 0
+                          ? 50
+                          : ((point.price - minPrice) / range) * 80 + 10;
 
-                    return (
-                      <div
-                        key={index}
-                        className="flex flex-col items-center flex-1"
-                      >
+                      return (
                         <div
-                          className={`w-full rounded-sm ${point.price >= chartData[Math.max(0, index - 1)].price ? "bg-green-500" : "bg-red-500"}`}
-                          style={{ height: `${heightPercent}%` }}
-                        ></div>
-                        {index % 5 === 0 && (
-                          <span className="text-xs text-gray-500 mt-1">
-                            {point.date}
-                          </span>
-                        )}
-                      </div>
-                    );
-                  })}
+                          key={index}
+                          className="flex flex-col items-center justify-end flex-1 h-full"
+                        >
+                          <div
+                            className={`w-full rounded-sm ${point.price >= chartData[Math.max(0, index - 1)].price ? "bg-green-500" : "bg-red-500"}`}
+                            style={{ height: `${heightPercent}%` }}
+                          ></div>
+                        </div>
+                      );
+                    });
+                  })()}
                 </div>
+              </div>
+              <div className="flex mt-1 space-x-1">
+                {chartData.map((point, index) => (
+                  <div key={index} className="flex-1 text-center">
+                    {index % 5 === 0 && (
+                      <span className="text-xs text-gray-500">{point.date}</span>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
 

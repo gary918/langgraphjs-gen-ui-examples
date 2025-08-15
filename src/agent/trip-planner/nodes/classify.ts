@@ -1,4 +1,4 @@
-import { ChatOpenAI } from "@langchain/openai";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { TripPlannerState, TripPlannerUpdate } from "../types";
 import { z } from "zod";
 import { formatMessages } from "@/agent/utils/format-messages";
@@ -19,7 +19,10 @@ export async function classify(
       ),
   });
 
-  const model = new ChatOpenAI({ model: "gpt-4o", temperature: 0 }).bindTools(
+  const model = new ChatGoogleGenerativeAI({
+    model: "gemini-2.5-flash",
+    temperature: 0,
+  }).bindTools(
     [
       {
         name: "classify",

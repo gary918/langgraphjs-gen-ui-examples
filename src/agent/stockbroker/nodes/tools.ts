@@ -1,5 +1,5 @@
 import { StockbrokerState, StockbrokerUpdate } from "../types";
-import { ChatOpenAI } from "@langchain/openai";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { typedUi } from "@langchain/langgraph-sdk/react-ui/server";
 import type ComponentMap from "../../../agent-uis/index";
 import { z } from "zod";
@@ -126,7 +126,10 @@ async function getPriceSnapshotForTicker(ticker: string): Promise<Snapshot> {
   return snapshot;
 }
 
-const llm = new ChatOpenAI({ model: "gpt-4o-mini", temperature: 0 });
+const llm = new ChatGoogleGenerativeAI({
+  model: "gemini-2.5-flash",
+  temperature: 0,
+});
 
 const getStockPriceSchema = z.object({
   ticker: z.string().describe("The ticker symbol of the company"),

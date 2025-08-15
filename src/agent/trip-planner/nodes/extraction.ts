@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { ChatOpenAI } from "@langchain/openai";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { TripDetails, TripPlannerState, TripPlannerUpdate } from "../types";
 import { z } from "zod";
 import { ToolMessage } from "@langchain/langgraph-sdk";
@@ -11,19 +11,25 @@ function calculateDates(
   endDate: string | undefined,
 ): { startDate: Date; endDate: Date } {
   const now = new Date();
+  const currentYear = now.getFullYear();
+
+  const adjustToCurrentYear = (date: Date) => {
+    if (date.getFullYear() < currentYear) {
+      date.setFullYear(currentYear);
+    }
+    return date;
+  };
 
   if (!startDate && !endDate) {
-    // Both undefined: 4 and 5 weeks in future
     const start = new Date(now);
-    start.setDate(start.getDate() + 28); // 4 weeks
     const end = new Date(now);
-    end.setDate(end.getDate() + 35); // 5 weeks
+    end.setDate(end.getDate() + 1);
     return { startDate: start, endDate: end };
   }
 
   if (startDate && !endDate) {
     // Only start defined: end is 1 week after
-    const start = new Date(startDate);
+    const start = adjustToCurrentYear(new Date(startDate));
     const end = new Date(start);
     end.setDate(end.getDate() + 7);
     return { startDate: start, endDate: end };
@@ -31,7 +37,7 @@ function calculateDates(
 
   if (!startDate && endDate) {
     // Only end defined: start is 1 week before
-    const end = new Date(endDate);
+    const end = adjustToCurrentYear(new Date(endDate));
     const start = new Date(end);
     start.setDate(start.getDate() - 7);
     return { startDate: start, endDate: end };
@@ -39,8 +45,8 @@ function calculateDates(
 
   // Both defined: use as is
   return {
-    startDate: new Date(startDate!),
-    endDate: new Date(endDate!),
+    startDate: adjustToCurrentYear(new Date(startDate!)),
+    endDate: adjustToCurrentYear(new Date(endDate!)),
   };
 }
 
@@ -68,7 +74,10 @@ export async function extraction(
       ),
   });
 
-  const model = new ChatOpenAI({ model: "gpt-4o", temperature: 0 }).bindTools([
+  const model = new ChatGoogleGenerativeAI({
+    model: "gemini-2.5-flash",
+    temperature: 0,
+  }).bindTools([
     {
       name: "extract",
       description: "A tool to extract information from a user's request.",

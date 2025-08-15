@@ -21,16 +21,20 @@ export const SupervisorZodConfiguration = z.object({
     .optional()
     .langgraph.metadata({
       type: "select",
-      default: "anthropic/claude-3-7-sonnet-latest",
+      default: "google/gemini-2.5-flash",
       description: "The model to use in all generations",
       options: [
+        {
+          label: "Gemini 2.5 Flash",
+          value: "google/gemini-2.5-flash",
+        }, /*
         {
           label: "Claude 3.7 Sonnet",
           value: "anthropic/claude-3-7-sonnet-latest",
         },
         {
           label: "Claude 3.5 Sonnet",
-          value: "anthropic/claude-3-5-sonnet-latest",
+          value: "anthropic/gemini-2.5-flash",
         },
         {
           label: "GPT 4o",
@@ -51,7 +55,7 @@ export const SupervisorZodConfiguration = z.object({
         {
           label: "o4",
           value: "openai/o4",
-        },
+        }, */
       ],
     }),
   /**

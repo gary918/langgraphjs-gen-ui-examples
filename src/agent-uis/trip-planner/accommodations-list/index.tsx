@@ -165,7 +165,7 @@ function BookedAccommodation({
 
   return (
     <div
-      className="relative w-full h-[400px] rounded-2xl shadow-md overflow-hidden"
+      className="relative w-[300px] h-[400px] rounded-2xl shadow-md overflow-hidden"
       style={{
         backgroundImage: `url(${accommodation.image})`,
         backgroundSize: "cover",
@@ -261,7 +261,7 @@ export default function AccommodationsList({
         console.error("Failed to parse tool response content.");
       }
     }
-  }, []);
+  }, [thread, toolCallId, accommodationBooked]);
 
   function handleBookAccommodation(accommodation: Accommodation) {
     const orderDetails = {

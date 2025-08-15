@@ -58,18 +58,19 @@ export default function BuyStock(props: {
   useEffect(() => {
     if (typeof window === "undefined" || finalPurchase) return;
     const toolResponse = getToolResponse(toolCallId, thread);
-    if (toolResponse) {
+
+    if (
+      toolResponse &&
+      toolResponse.name === "buy-stock" &&
+      typeof toolResponse.content === "string"
+    ) {
       try {
-        const parsedContent: {
-          purchaseDetails: {
-            ticker: string;
-            quantity: number;
-            price: number;
-          };
-        } = JSON.parse(toolResponse.content as string);
-        setFinalPurchase(parsedContent.purchaseDetails);
-      } catch {
-        console.error("Failed to parse tool response content.");
+        const parsedContent = JSON.parse(toolResponse.content);
+        if (parsedContent && parsedContent.purchaseDetails) {
+          setFinalPurchase(parsedContent.purchaseDetails);
+        }
+      } catch (e) {
+        console.error("Failed to parse tool response content:", e);
       }
     }
   }, []);

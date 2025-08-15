@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Price } from "@/agent/types";
+import { Input } from "@/components/ui/input";
 
 const chartConfig = {
   price: {
@@ -89,6 +90,8 @@ export default function StockPrice(props: {
   const { ticker } = props;
   const { oneDayPrices, thirtyDayPrices } = props;
   const [displayRange, setDisplayRange] = useState<DisplayRange>("1d");
+  const [showBuyStock, setShowBuyStock] = useState(false);
+  const [shares, setShares] = useState(1);
 
   const {
     currentPrice,
@@ -148,11 +151,48 @@ export default function StockPrice(props: {
     return format(value, "LLL do");
   };
 
+  const handleBuyStock = () => {
+    setShowBuyStock(true);
+  };
+
+  const handleConfirmBuy = () => {
+    // In a real application, you would make an API call to buy the stock.
+    console.log(`Buying ${shares} shares of ${ticker}`);
+    setShowBuyStock(false);
+  };
+
+  if (showBuyStock) {
+    return (
+      <div className="w-full max-w-3xl rounded-xl shadow-md overflow-hidden border border-gray-200 flex flex-col gap-4 p-3">
+        <div className="flex items-center justify-start gap-4 mb-2 text-lg font-medium text-gray-700">
+          <p>Buy Stock</p>
+        </div>
+        <p className="text-lg font-medium text-gray-700">{ticker}</p>
+        <div className="flex flex-col gap-2">
+          <label htmlFor="shares">Shares</label>
+          <Input
+            id="shares"
+            type="number"
+            value={shares}
+            onChange={(e) => setShares(Number(e.target.value))}
+            min="1"
+          />
+        </div>
+        <Button onClick={handleConfirmBuy} className="mt-2">
+          Buy
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full max-w-3xl rounded-xl shadow-md overflow-hidden border border-gray-200 flex flex-col gap-4 p-3">
-      <div className="flex items-center justify-start gap-4 mb-2 text-lg font-medium text-gray-700">
-        <p>{ticker}</p>
-        <p>${currentPrice}</p>
+      <div className="flex items-center justify-between gap-4 mb-2 text-lg font-medium text-gray-700">
+        <div className="flex items-center gap-4">
+          <p>{ticker}</p>
+          <p>${currentPrice}</p>
+        </div>
+        <Button onClick={handleBuyStock}>Buy</Button>
       </div>
       <div className="flex flex-col gap-2">
         <p className={change === "up" ? "text-green-500" : "text-red-500"}>
