@@ -1,5 +1,5 @@
 # Quick Start
-* ```export GOOGLE_CLOUD_PROJECT=firstproject-463308```
+* ```export GOOGLE_CLOUD_PROJECT=xxx```
 * ```gcloud auth application-default login```
 * ```pnpm agent```
 * ```pnpm dev```
