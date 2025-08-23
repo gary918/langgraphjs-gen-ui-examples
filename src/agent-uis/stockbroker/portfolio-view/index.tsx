@@ -1,7 +1,13 @@
 import "./index.css";
 import { useCallback, useMemo, useState } from "react";
+import { UIMessage, useStreamContext } from "@langchain/langgraph-sdk/react-ui";
+import { Message } from "@langchain/langgraph-sdk";
 
 export default function PortfolioView() {
+  const thread = useStreamContext<
+    { messages: Message[]; ui: UIMessage[] },
+    { MetaType: { ui: UIMessage | undefined } }
+  >();
   // Placeholder portfolio data - ideally would come from props
   const [portfolio] = useState({
     totalValue: 156842.75,
@@ -644,7 +650,23 @@ export default function PortfolioView() {
             </div>
 
             <div className="border-t border-gray-200 p-4 flex space-x-2">
-              <button className="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition-colors text-sm">
+              <button
+                onClick={() => {
+                  if (selectedStock) {
+                    thread.submit(
+                      {
+                        messages: [
+                          {
+                            type: "human",
+                            content: `Buy 10 share of ${selectedStock.symbol}`,
+                          },
+                        ],
+                      },
+                    );
+                  }
+                }}
+                className="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition-colors text-sm"
+              >
                 Buy More
               </button>
               <button className="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md transition-colors text-sm">

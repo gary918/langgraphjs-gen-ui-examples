@@ -200,20 +200,27 @@ export async function callTools(
     ui.push({ name: "portfolio", props: {} }, { message });
   }
   if (buyStockToolCall) {
-    const snapshot = await getPriceSnapshotForTicker(
-      buyStockToolCall.args.ticker,
-    );
-    ui.push(
-      {
-        name: "buy-stock",
-        props: {
-          toolCallId: buyStockToolCall.id ?? "",
-          snapshot,
-          quantity: buyStockToolCall.args.quantity,
+    try {
+      const snapshot = await getPriceSnapshotForTicker(
+        buyStockToolCall.args.ticker,
+      );
+      ui.push(
+        {
+          name: "buy-stock",
+          props: {
+            toolCallId: buyStockToolCall.id ?? "",
+            snapshot,
+            quantity: buyStockToolCall.args.quantity,
+          },
         },
-      },
-      { message },
-    );
+        { message },
+      );
+    } catch (e) {
+      message.content = "Sorry, the stock price cannot be fetched.";
+      if (message.tool_calls) {
+        message.tool_calls = [];
+      }
+    }
   }
 
   return {

@@ -112,7 +112,8 @@ export default function RestaurantsList({
       rating: 4.7,
       distance: "0.5 miles from center",
       image:
-        "https://a0.muscache.com/im/pictures/miso/Hosting-813727499556203528/original/12c1b750-4bea-40d9-9a10-66804df0530a.jpeg?im_w=720&im_format=avif",
+        "https://github.com/gary918/SampleData/blob/master/steakhouse.jpeg?raw=true",
+        //"https://a0.muscache.com/im/pictures/miso/Hosting-813727499556203528/original/12c1b750-4bea-40d9-9a10-66804df0530a.jpeg?im_w=720&im_format=avif",
       openingHours: "5:00 PM - 10:00 PM",
       popular: true,
     },
@@ -124,8 +125,8 @@ export default function RestaurantsList({
       rating: 4.9,
       distance: "0.8 miles from center",
       image:
-        "https://a0.muscache.com/im/pictures/prohost-api/Hosting-52443635/original/05f084c6-60d0-4945-81ff-d23dfb89c3ca.jpeg?im_w=720&im_format=avif",
-      //image: "https://placehold.co/300x200?text=Restaurant2",
+        "https://github.com/gary918/SampleData/blob/master/seafood.jpeg?raw=true",
+        //"https://a0.muscache.com/im/pictures/prohost-api/Hosting-52443635/original/05f084c6-60d0-4945-81ff-d23dfb89c3ca.jpeg?im_w=720&im_format=avif",
       openingHours: "12:00 PM - 11:00 PM",
       popular: true,
     },
@@ -137,7 +138,8 @@ export default function RestaurantsList({
       rating: 4.5,
       distance: "1.2 miles from center",
       image:
-        "https://a0.muscache.com/im/pictures/miso/Hosting-50545526/original/af14ce0b-481e-41be-88d1-b84758f578e5.jpeg?im_w=720&im_format=avif",
+        "https://github.com/gary918/SampleData/blob/master/italian.jpeg?raw=true",
+        //"https://a0.muscache.com/im/pictures/miso/Hosting-50545526/original/af14ce0b-481e-41be-88d1-b84758f578e5.jpeg?im_w=720&im_format=avif",
       openingHours: "11:30 AM - 9:30 PM",
       popular: false,
     },
@@ -149,7 +151,8 @@ export default function RestaurantsList({
       rating: 4.6,
       distance: "0.7 miles from center",
       image:
-        "https://a0.muscache.com/im/pictures/prohost-api/Hosting-46122096/original/1bd27f94-cf00-4864-8ad9-bc1cd6c5e10d.jpeg?im_w=720&im_format=avif",
+        "https://github.com/gary918/SampleData/blob/master/indian.jpeg?raw=true",
+        //"https://a0.muscache.com/im/pictures/prohost-api/Hosting-46122096/original/1bd27f94-cf00-4864-8ad9-bc1cd6c5e10d.jpeg?im_w=720&im_format=avif",
       openingHours: "12:00 PM - 10:00 PM",
       popular: false,
     },
