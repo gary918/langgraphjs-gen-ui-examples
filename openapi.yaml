@@ -1,0 +1,46 @@
+swagger: '2.0'
+info:
+  title: LangGraph API
+  description: API for the LangGraph JS example.
+  version: 1.0.0
+host: aiux-proxy-944542286515.us-central1.run.app
+schemes:
+  - https
+produces:
+  - application/json
+x-google-backend:
+  address: https://langgraphjs-gen-ui-examples-944542286515.us-central1.run.app
+  protocol: h2
+paths:
+  /threads:
+    post:
+      summary: Create a new thread.
+      operationId: createThread
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: object
+  /threads/{thread_id}/messages:
+    post:
+      summary: Add a message to a thread.
+      operationId: addMessage
+      parameters:
+        - name: thread_id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: object
+  /threads/search:
+    get:
+      summary: Search threads.
+      operationId: searchThreads
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: object

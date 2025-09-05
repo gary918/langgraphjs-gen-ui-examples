@@ -1,4 +1,5 @@
 # LangGraph Generative UI Examples
+NOTE: This demo's been updated to use **Google Gemini 2.5 Flash** only from the [original repo](https://github.com/langchain-ai/langgraphjs-gen-ui-examples]. 
 
 This repository contains a series of agents intended to be used with the [Agent Chat UI](https://agentchat.vercel.app) ([repo](https://github.com/langchain-ai/agent-chat-ui)).
 
@@ -24,28 +25,13 @@ Then, install dependencies:
 pnpm install
 ```
 
-Next, copy the `.env.example` file, and set the necessary environment variables:
+Next, set the necessary environment variables:
 
-```bash
-cp .env.example .env
-```
+```export GOOGLE_API_KEY=xxx```
 
-Only [OpenAI](https://platform.openai.com/), and [Google GenAI](https://aistudio.google.com/), API keys are required ([Financial Datasets](https://www.financialdatasets.ai/) is only required if you want to call the stockbroker graph, and [Anthropic](https://console.anthropic.com) is only used in the pizza ordering agent).
+Optionally, API key of [Financial Datasets](https://www.financialdatasets.ai/) is needed only if you want to call the stockbroker graph:
 
-```bash
-# Required
-OPENAI_API_KEY=""
-GOOGLE_API_KEY=""
-
-# Optional, but recommended for best in class tracing and observability.
-# LANGSMITH_PROJECT="default"
-# LANGSMITH_API_KEY=""
-# LANGSMITH_TRACING_V2=true
-
-# Optional
-# ANTHROPIC_API_KEY=""
-# FINANCIAL_DATASETS_API_KEY=""
-```
+```export export FINANCIAL_DATASETS_API_KEY=xxx```
 
 Start the LangGraph server:
 
