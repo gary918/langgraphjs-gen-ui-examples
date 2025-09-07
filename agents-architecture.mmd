@@ -1,0 +1,26 @@
+graph TD
+    Supervisor[Supervisor Agent]
+    Chat[Chat Agent]
+    Email[Email Agent]
+    Stockbroker[Stockbroker Agent]
+    TripPlanner[Trip Planner Agent]
+    Writer[Writer Agent]
+    PizzaOrderer[Pizza Orderer Agent]
+    OpenCode[Open Code Agent]
+    Utils[Shared Utils]
+
+    Supervisor --> Chat
+    Supervisor --> Email
+    Supervisor --> Stockbroker
+    Supervisor --> TripPlanner
+    Supervisor --> Writer
+    Supervisor --> PizzaOrderer
+    Supervisor --> OpenCode
+
+    Chat --> Utils
+    Email --> Utils
+    Stockbroker --> Utils
+    TripPlanner --> Utils
+    Writer --> Utils
+    PizzaOrderer --> Utils
+    OpenCode --> Utils

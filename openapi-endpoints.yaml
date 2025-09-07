@@ -1,0 +1,59 @@
+openapi: 3.0.0
+info:
+  title: LangGraphJS Proxy API
+  version: 1.0.0
+servers:
+  - url: https://langgraphjs-gen-ui-examples-944542286515.us-central1.run.app
+paths:
+  /{proxy+}:
+    x-google-backend:
+      address: https://langgraphjs-gen-ui-examples-944542286515.us-central1.run.app
+    options:
+      summary: CORS support
+      operationId: corsProxy
+      responses:
+        '200':
+          description: CORS support
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              example: "*"
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+              example: "GET,POST,PUT,DELETE,OPTIONS"
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+              example: "*"
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+              example: "false"
+      x-google-endpoints:
+        - name: langgraphjs-gen-ui-examples-944542286515.us-central1.run.app
+    get:
+      summary: Proxy GET
+      operationId: proxyGet
+      responses:
+        '200':
+          description: Proxy GET
+    post:
+      summary: Proxy POST
+      operationId: proxyPost
+      responses:
+        '200':
+          description: Proxy POST
+    put:
+      summary: Proxy PUT
+      operationId: proxyPut
+      responses:
+        '200':
+          description: Proxy PUT
+    delete:
+      summary: Proxy DELETE
+      operationId: proxyDelete
+      responses:
+        '200':
+          description: Proxy DELETE
