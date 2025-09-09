@@ -13,9 +13,11 @@ This repository contains a series of agents intended to be used with the [Agent 
 First, clone this repository:
 
 ```bash
-git clone https://github.com/langchain-ai/langgraphjs-gen-ui-examples.git
+git clone https://github.com/gary918/langgraphjs-gen-ui-examples.git
 
 cd langgraphjs-gen-ui-examples
+
+git checkout -b your_branch origin/feature/garytest
 ```
 
 Then, install dependencies:
